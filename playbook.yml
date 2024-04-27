@@ -3,16 +3,12 @@
 
 - name: ansible
   hosts: servers
-  become: yes
+  gather_facts: yes
 
   tasks:
-    - name: check ubuntu version
-      shell: hostnamectl | grep -q "20.04.2"
-      register: check_version
-
     - name: Install packages with apt and shell
       apt:
         name: ntp
         state: latest
         update_cache: yes
-      when: check_version.rc == 0
+      when: ansible_distribution_version == "20.04"
