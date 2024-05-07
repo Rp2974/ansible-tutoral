@@ -1,0 +1,42 @@
+---
+
+#- name: Install and configure ntp
+#  hosts: servers
+#  gather_facts: true
+#  vars:
+#    - ip: 192.168.134.45
+#  tasks:
+      #    - name: Install ntp package with apt
+      #        apt:
+      #          name: ntp
+      #        state: latest
+      #        update_cache: yes
+      #      when: ansible_distribution_version == "20.04"
+
+      #    - name: lineinfile
+      #      lineinfile:
+      #        path: "/etc/ntp.conf"
+      #        line: "{{ item }}"
+      #        insertafter: EOF
+      #      loop:
+      #        - server 192.168.134.140
+      #      when: ansible_distribution_version == "20.04"
+
+    - name: use template fo adding ntp server ip
+      ansible.builtin.template:
+        src: /home/ansible/roles/ntp/templates/template.j2
+        dest: /home/vim/ntp.conf
+      when: ansible_distribution_version == "20.04"
+
+    - name: systemd enable ntp
+      systemd:
+        name: ntp
+        enabled: true
+      when: ansible_distribution_version == "20.04"
+
+
+    - name: systemd restart ntp service
+      systemd:
+        name: ntp
+        state: restarted
+      when: ansible_distribution_version == "20.04"
