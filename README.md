@@ -1,3 +1,4 @@
 # ansible-tutoral
 
-test
+test for ansible rpoles :
+ntp
